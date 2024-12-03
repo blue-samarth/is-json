@@ -18,9 +18,15 @@ validate_json() {
 
     # Basic structure checks using Bash pattern matching
     if ! [[ "$json" =~ ^\{.*\}$ || "$json" =~ ^\[.*\]$ ]]; then
+        echo "Invalid JSON"
         return 1
     fi
 
+    # now we will check against the key value pairs 
+    # we will check if the key is enclosed in double quotes or not
+
+    json=$(echo "$json" | sed 's/^{*//;s/}*$//')
+    echo "$json"
     return 0
 }
 
