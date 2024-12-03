@@ -6,12 +6,23 @@
 
 # Check if the JSON is enclosed in curly braces or not.
 validate_json() {
-    # first we will remove all the white spaces from the JSON
-    json=$(echo "$1" | tr -d '[:space:]')
-    
-    # Step 1: Check if the JSON is enclosed in curly braces or not.
-    if [[ "${json:0:1}" != "{" || "${json: -1}" != "}" ]]; then 
+    local json="$1"
+
+    # Check for empty string
+    if [[ -z "$json" ]]; then
         return 1
     fi
-    
+
+    # Remove leading and trailing whitespace
+    json=$(echo "$json" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    echo "$json"
+
+    # Basic structure checks using Bash pattern matching
+    if [[ "$json" =~ ^\{.*\}$ ]]; then 
+        return 0
+    else
+        return 1
+    fi
 }
+
+validate_json "$1"
