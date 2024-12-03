@@ -15,14 +15,13 @@ validate_json() {
 
     # Remove leading and trailing whitespace
     json=$(echo "$json" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-    echo "$json"
 
     # Basic structure checks using Bash pattern matching
-    if [[ "$json" =~ ^\{.*\}$ ]]; then 
-        return 0
-    else
+    if ! [[ "$json" =~ ^\{.*\}$ || "$json" =~ ^\[.*\]$ ]]; then
         return 1
     fi
+
+    return 0
 }
 
 validate_json "$1"
